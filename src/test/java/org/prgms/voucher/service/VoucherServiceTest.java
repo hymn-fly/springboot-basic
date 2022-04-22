@@ -6,8 +6,6 @@ import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.prgms.EmbeddedTestDbInitializer;
-import org.prgms.TestDbConfig;
 import org.prgms.voucher.FixedAmountVoucher;
 import org.prgms.voucher.PercentDiscountVoucher;
 import org.prgms.voucher.Voucher;
@@ -16,7 +14,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.util.UUID;
 
-@SpringJUnitConfig(value = {TestDbConfig.class}, initializers = EmbeddedTestDbInitializer.class)
+@SpringJUnitConfig
 class VoucherServiceTest {
 
     @Autowired

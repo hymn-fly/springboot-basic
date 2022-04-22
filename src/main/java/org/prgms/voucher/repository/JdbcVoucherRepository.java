@@ -4,6 +4,7 @@ import org.prgms.utils.UuidUtils;
 import org.prgms.voucher.FixedAmountVoucher;
 import org.prgms.voucher.PercentDiscountVoucher;
 import org.prgms.voucher.Voucher;
+import org.prgms.voucher.VoucherRepository;
 import org.springframework.context.annotation.Primary;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;

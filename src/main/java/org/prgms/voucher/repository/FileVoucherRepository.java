@@ -1,6 +1,7 @@
 package org.prgms.voucher.repository;
 
 import org.prgms.voucher.Voucher;
+import org.prgms.voucher.VoucherRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;

@@ -2,14 +2,12 @@ package org.prgms.wallet;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
-import org.prgms.EmbeddedTestDbInitializer;
-import org.prgms.TestDbConfig;
 import org.prgms.customer.Customer;
-import org.prgms.customer.repository.CustomerRepository;
+import org.prgms.customer.CustomerRepository;
 import org.prgms.voucher.FixedAmountVoucher;
 import org.prgms.voucher.PercentDiscountVoucher;
 import org.prgms.voucher.Voucher;
-import org.prgms.voucher.repository.VoucherRepository;
+import org.prgms.voucher.VoucherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +16,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import java.util.UUID;
 
 
-@SpringJUnitConfig(value = {TestDbConfig.class}, initializers = EmbeddedTestDbInitializer.class)
+@SpringJUnitConfig
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class WalletRepositoryTest {
 
@@ -36,14 +34,14 @@ class WalletRepositoryTest {
     @Autowired
     private VoucherRepository voucherRepository;
 
-    private final Customer newCustomer = new Customer(UUID.randomUUID(), "user-test", "user-test@gmail.com");
-    private final Customer newCustomer2 = new Customer(UUID.randomUUID(), "user-test2", "user-test2@gmail.com");
+    private final Customer newCustomer = new Customer("user-test", "user-test@gmail.com");
+    private final Customer newCustomer2 = new Customer( "user-test2", "user-test2@gmail.com");
     private final Voucher voucher = new FixedAmountVoucher(UUID.randomUUID(), 100L);
     private final Voucher voucher2 = new PercentDiscountVoucher(UUID.randomUUID(), 10L);
 
-    private final Wallet wallet1 = new Wallet(UUID.randomUUID(), newCustomer.customerId(), voucher.getVoucherId());
-    private final Wallet wallet2 = new Wallet(UUID.randomUUID(), newCustomer2.customerId(), voucher.getVoucherId());
-    private final Wallet wallet3 = new Wallet(UUID.randomUUID(), newCustomer.customerId(), voucher2.getVoucherId());
+    private final Wallet wallet1 = new Wallet(UUID.randomUUID(), newCustomer.id(), voucher.getVoucherId());
+    private final Wallet wallet2 = new Wallet(UUID.randomUUID(), newCustomer2.id(), voucher.getVoucherId());
+    private final Wallet wallet3 = new Wallet(UUID.randomUUID(), newCustomer.id(), voucher2.getVoucherId());
 
     @BeforeAll
     void setup() {
@@ -74,8 +72,8 @@ class WalletRepositoryTest {
         walletRepository.save(wallet2);
         walletRepository.save(wallet3);
 
-        Assertions.assertThat(walletRepository.findByCustomerId(newCustomer.customerId())).hasSize(2);
-        Assertions.assertThat(walletRepository.findByCustomerId(newCustomer2.customerId())).hasSize(1);
+        Assertions.assertThat(walletRepository.findByCustomerId(newCustomer.id())).hasSize(2);
+        Assertions.assertThat(walletRepository.findByCustomerId(newCustomer2.id())).hasSize(1);
     }
 
     @Test

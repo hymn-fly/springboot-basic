@@ -1,40 +1,28 @@
 package org.prgms;
 
-import org.prgms.customer.Customer;
-import org.prgms.io.FileReader;
 import org.prgms.io.InOut;
 import org.prgms.voucher.FixedAmountVoucher;
 import org.prgms.voucher.PercentDiscountVoucher;
 import org.prgms.voucher.service.VoucherService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
+import javax.annotation.PostConstruct;
 import java.util.InputMismatchException;
-import java.util.List;
 import java.util.UUID;
 
+@Profile({"local", "dev", "prod"})
 @Component
 public class CommandLineApplication {
     private final VoucherService service;
     private final InOut console;
-    private final FileReader fileReader;
-    private final List<Customer> blackList;
-    private final static Logger logger = LoggerFactory.getLogger(CommandLineApplication.class);
 
-    @Autowired
-    private ApplicationContext context;
-
-    public CommandLineApplication(VoucherService service, InOut console, FileReader fileReader) {
+    public CommandLineApplication(VoucherService service, InOut console) {
         this.service = service;
         this.console = console;
-        this.fileReader = fileReader;
-        this.blackList = new ArrayList<>();
     }
 
+    @PostConstruct
     public void execute() {
         while (true) {
             console.optionMessage();
@@ -44,7 +32,7 @@ public class CommandLineApplication {
                     case "exit":
                         return;
                     case "create":
-                        int opt = console.chooseVoucher();
+                        var opt = console.chooseVoucher();
                         switch (opt) {
                             case 1 -> service.createVoucher(new FixedAmountVoucher(UUID.randomUUID(), 10L));
                             case 2 -> service.createVoucher(new PercentDiscountVoucher(UUID.randomUUID(), 10L));
@@ -61,10 +49,5 @@ public class CommandLineApplication {
                 console.inputError(e.getMessage());
             }
         }
-    }
-
-    public void readBlackList(String path) throws Exception {
-        blackList.addAll(fileReader.readFile());
-        logger.info("고객 블랙리스트 : {}", blackList);
     }
 }

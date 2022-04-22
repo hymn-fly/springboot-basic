@@ -1,6 +1,7 @@
 package org.prgms.voucher.repository;
 
 import org.prgms.voucher.Voucher;
+import org.prgms.voucher.VoucherRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
